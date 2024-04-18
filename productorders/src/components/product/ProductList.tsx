@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Product = {
     id: number;
@@ -13,17 +13,14 @@ export default function ProductList() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch("http://localhost:8089/", {
+                const response = await fetch("http://localhost:8089/products", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*'
                     }
                 });
                 const data = await response.json();
-                console.log(data, 'data');
-                
                 setProducts(data);
-                console.log('Products:', data);
                 
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -36,17 +33,26 @@ export default function ProductList() {
     
     return (
       <div>
-        <h2>Product List</h2>
+        <h1>Product List</h1>
         <div>
-          <ul>
-            {products.map((product) => (
-              <li key={product.id}>
-              <p>{product.name}</p>
-              <p>{product.price}</p>
-              <p>{product.weightInGrams}</p>
-              </li>
-            ))}
-          </ul>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Weight</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product) => (
+                <tr key={product.id}>
+                  <td>{product.name}</td>
+                  <td>{product.price}</td>
+                  <td>{product.weightInGrams}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     );
